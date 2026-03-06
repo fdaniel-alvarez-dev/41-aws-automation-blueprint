@@ -1,23 +1,55 @@
 # 41-aws-reliability-security-airflow
 
-A reference data platform blueprint with pragmatic governance: quality checks, lineage, access controls, and CI for data assets.
-
-Focus: airflow
-
+A portfolio-grade **Airflow reliability and security** toolkit:
+deterministic offline demos, operational guardrails, and production-safe validation paths.
 
 ## The top pains this repo addresses
-1) Replacing manual, risky changes with automated delivery—repeatable infrastructure, safe deployments, and drift-free environments (IaC + CI/CD + GitOps).
-2) Designing a resilient, scalable cloud platform foundation—Kubernetes/container orchestration, networking, and standard patterns teams can reuse.
-3) Building a data platform people trust—reliable pipelines, clear ownership, data quality checks, and governance that scales without slowing delivery.
+1) Keeping orchestration dependable: predictable DAG definitions, clear validation gates, and fast failure detection.
+2) Reducing operational risk: repeatable checks and guardrails instead of “run it and hope”.
+3) Enforcing security and governance without blocking delivery: explicit validation modes and clean documentation.
 
 ## Quick demo (local)
 ```bash
-make setup
-make demo
-make test
+make demo-offline
+make test-demo
 ```
 
 What you get:
-- a tiny ETL pipeline (CSV → Parquet)
-- schema validation with `pandera`
-- a basic “trust contract” (docs + tests + CI)
+- an offline demo dataset in JSONL format
+- a small, reviewable DAG spec (`dags/demo_etl_dag.py`) + offline DAG validation
+- deterministic guardrails report (`artifacts/airflow_guardrails.json`)
+- explicit `TEST_MODE=demo|production` tests with safe production gating
+
+## Tests (two explicit modes)
+
+- `TEST_MODE=demo` (default): offline-only checks, deterministic artifacts
+- `TEST_MODE=production`: real integrations (requires explicit opt-in + configuration)
+
+Run production mode:
+
+```bash
+make test-production
+```
+
+Production integration options:
+- Set `AIRFLOW_BASE_URL` to run Airflow REST API health checks (optionally add `AIRFLOW_USERNAME` / `AIRFLOW_PASSWORD`).
+- Or set `TERRAFORM_VALIDATE=1` to validate the included Terraform example (requires `terraform`).
+
+## Sponsorship and contact
+
+Sponsored by:
+CloudForgeLabs  
+https://cloudforgelabs.ainextstudios.com/  
+support@ainextstudios.com
+
+Built by:
+Freddy D. Alvarez  
+https://www.linkedin.com/in/freddy-daniel-alvarez/
+
+For job opportunities, contact:
+it.freddy.alvarez@gmail.com
+
+## License
+
+Personal, educational, and non-commercial use is free. Commercial use requires paid permission.
+See `LICENSE` and `COMMERCIAL_LICENSE.md`.
